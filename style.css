@@ -6,6 +6,7 @@
     --warna-utama: #6a11cb;
     --warna-utama-hover: #2575fc;
     --font-utama: 'Poppins', sans-serif;
+    --font-dancing: 'Dancing Script', cursive;
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
@@ -37,7 +38,8 @@ body {
     perspective: 1000px;
 }
 
-.card, .kartu-salam {
+/* === DESAIN HALAMAN UTAMA (index.html) === */
+.card {
     background: var(--warna-card);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -47,368 +49,285 @@ body {
     max-width: 500px;
     box-shadow: var(--shadow);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    position: relative; /* Penting untuk amplop absolute */
-    overflow: hidden; /* Sembunyikan amplop saat di luar batas */
 }
-
-.card h2, .kartu-salam h2 {
-    text-align: center;
-    color: var(--warna-utama);
-    margin-top: 0;
-}
-.card p, .kartu-salam p {
-    text-align: center;
-    line-height: 1.6;
-    margin-bottom: 25px;
-}
+.card h2 { text-align: center; color: var(--warna-utama); margin-top: 0; }
+.card p { text-align: center; line-height: 1.6; margin-bottom: 25px; }
 
 .input-group {
     margin-bottom: 20px;
     animation: slideUp 0.5s ease-out forwards;
 }
-
-.input-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 700;
-}
-
+.input-group label { display: block; margin-bottom: 8px; font-weight: 700; }
 input[type="text"], textarea {
-    width: 100%;
-    padding: 12px 15px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    background-color: rgba(255, 255, 255, 0.5);
-    font-family: var(--font-utama);
-    font-size: 16px;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
+    width: 100%; padding: 12px 15px; border-radius: 8px;
+    border: 1px solid #ddd; background-color: rgba(255, 255, 255, 0.5);
+    font-family: var(--font-utama); font-size: 16px;
+    box-sizing: border-box; transition: all 0.3s ease;
 }
-
 input[type="text"]:focus, textarea:focus {
-    outline: none;
-    border-color: var(--warna-utama);
+    outline: none; border-color: var(--warna-utama);
     box-shadow: 0 0 10px rgba(106, 17, 203, 0.2);
 }
-
-textarea {
-    resize: vertical;
-    min-height: 80px;
-}
+textarea { resize: vertical; min-height: 80px; }
 
 .btn-utama {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    padding: 15px;
-    font-size: 16px;
-    font-weight: 700;
-    color: #fff;
+    display: flex; justify-content: center; align-items: center;
+    gap: 10px; width: 100%; padding: 15px; font-size: 16px;
+    font-weight: 700; color: #fff;
     background: linear-gradient(45deg, var(--warna-utama), var(--warna-utama-hover));
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: none; border-radius: 8px; cursor: pointer; text-decoration: none;
+    transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
-
 .btn-utama:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
-
-.btn-utama i {
-    width: 20px;
-    height: 20px;
-}
+.btn-utama i { width: 20px; height: 20px; }
 
 .hasil-container {
-    display: none;
-    margin-top: 25px;
-    animation: fadeIn 0.5s ease;
+    display: none; margin-top: 25px; animation: fadeIn 0.5s ease;
 }
-.hasil-container p {
-    text-align: center;
-    font-weight: 700;
-    margin-bottom: 10px;
-}
-
-.input-copy-wrapper {
-    display: flex;
-}
-
+.hasil-container p { text-align: center; font-weight: 700; margin-bottom: 10px; }
+.input-copy-wrapper { display: flex; }
 #linkFinal {
-    flex-grow: 1;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    background-color: #f0f0f0;
+    flex-grow: 1; border-top-right-radius: 0;
+    border-bottom-right-radius: 0; background-color: #f0f0f0;
 }
-
 .btn-copy {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 0 15px;
-    border: none;
-    background: var(--warna-utama);
-    color: white;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
+    display: flex; align-items: center; gap: 5px; padding: 0 15px;
+    border: none; background: var(--warna-utama); color: white;
+    border-top-right-radius: 8px; border-bottom-right-radius: 8px;
+    cursor: pointer; transition: background 0.3s ease;
+}
+.btn-copy:hover { background: var(--warna-utama-hover); }
+
+.btn-share-native {
+    background: linear-gradient(45deg, #1d976c, #59c173);
+    margin-top: 10px;
+}
+.btn-share-native:hover {
+    background: linear-gradient(45deg, #1d976c, #59c173);
+    transform: translateY(-3px) scale(1.02);
 }
 
-.btn-copy:hover {
-    background: var(--warna-utama-hover);
+.emoji-container { position: relative; }
+.label-wrapper {
+    display: flex; justify-content: space-between; align-items: center;
 }
+.btn-emoji {
+    background: none; border: none; font-size: 24px; cursor: pointer;
+    padding: 0 5px; opacity: 0.7; transition: all 0.2s ease;
+}
+.btn-emoji:hover { opacity: 1; transform: scale(1.1); }
+.emoji-tray {
+    display: none; background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 8px; padding: 10px; margin-top: 5px;
+    display: flex; flex-wrap: wrap; gap: 8px;
+}
+.emoji-tray-button {
+    background: none; border: none; font-size: 24px; cursor: pointer;
+    padding: 2px; border-radius: 4px; transition: background-color 0.2s;
+}
+.emoji-tray-button:hover { background-color: rgba(0, 0, 0, 0.1); }
+.emoji-tray small { color: #555; font-style: italic; }
+
+.anim-muncul-saran {
+    opacity: 0; transform: translateY(20px);
+    animation: anim-muncul-saran-frame 0.6s ease-out 0.2s forwards;
+}
+@keyframes anim-muncul-saran-frame {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* === DESAIN HALAMAN SALAM (salam.html) === */
+
+.salam-page-body {
+    /* Gunakan background yang lebih gelap untuk efek aurora */
+    background: #0f0c29;
+    background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    overflow: hidden; /* Sembunyikan partikel yang keluar layar */
+}
+
+/* Partikel Debu Magis */
+.particle-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+.particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    opacity: 0;
+    animation: float 20s infinite linear;
+}
+@keyframes float {
+    0% { transform: translateY(110vh) scale(1); opacity: 0; }
+    10%, 90% { opacity: 1; }
+    100% { transform: translateY(-10vh) scale(0.5); opacity: 0; }
+}
+/* Acak posisi dan delay partikel */
+.particle:nth-child(1) { top: 5%; left: 10%; animation-delay: 0s; }
+.particle:nth-child(2) { top: 15%; left: 80%; animation-delay: -3s; }
+.particle:nth-child(3) { top: 50%; left: 50%; animation-delay: -7s; }
+.particle:nth-child(4) { top: 70%; left: 20%; animation-delay: -10s; }
+.particle:nth-child(5) { top: 85%; left: 90%; animation-delay: -12s; }
+.particle:nth-child(6) { top: 30%; left: 30%; animation-delay: -14s; }
+.particle:nth-child(7) { top: 20%; left: 60%; animation-delay: -16s; }
+.particle:nth-child(8) { top: 60%; left: 75%; animation-delay: -18s; }
+.particle:nth-child(9) { top: 90%; left: 40%; animation-delay: -19s; }
+.particle:nth-child(10) { top: 40%; left: 5%; animation-delay: -20s; }
+
 
 .kartu-salam {
+    background: rgba(255, 255, 255, 0.1); /* Lebih transparan untuk glassmorphism */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 30px 40px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden; /* Penting untuk efek shine */
     text-align: center;
+    transform-style: preserve-3d;
 }
+
+/* Efek Kilau (Shine) */
+.kartu-shine {
+    position: absolute;
+    top: 0;
+    left: -100%; /* Mulai dari luar kiri */
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        rgba(255,255,255,0) 0%, 
+        rgba(255,255,255,0.4) 50%, 
+        rgba(255,255,255,0) 100%);
+    transform: skewX(-20deg);
+    z-index: 5;
+    animation: shine 5s ease-in-out infinite 2s; /* Jalan terus menerus */
+}
+@keyframes shine {
+    0% { left: -100%; }
+    50% { left: 150%; }
+    100% { left: 150%; }
+}
+
+/* Animasi Masuk Kartu Baru */
+.kartu-animasi-baru {
+    opacity: 0;
+    transform: scale(0.8) rotateY(-30deg);
+    animation: cardEntrance 1s ease-out 0.5s forwards;
+}
+@keyframes cardEntrance {
+    to {
+        opacity: 1;
+        transform: scale(1) rotateY(0);
+    }
+}
+
+/* Konten di dalam kartu akan fade in */
+.konten-salam {
+    opacity: 0;
+    animation: fadeInContent 1s ease-out forwards;
+    z-index: 10; /* Di atas shine */
+    position: relative; /* Di atas shine */
+}
+@keyframes fadeInContent {
+    to { opacity: 1; }
+}
+
+/* Delay animasi konten satu per satu */
+.kartu-salam h3 { animation-delay: 1.5s; }
+.kartu-salam h2 { animation-delay: 1.8s; }
+.kartu-salam .pesan-box { animation-delay: 2.2s; }
+.kartu-salam h4 { animation-delay: 4.5s; } /* Setelah pesan diketik */
+.kartu-salam .tombol-suka { animation-delay: 4.8s; }
+
+
 .kartu-salam h3 {
     font-weight: 300;
     font-size: 18px;
+    color: rgba(255, 255, 255, 0.8);
 }
 .kartu-salam h2 {
-    font-size: 32px;
+    font-size: 48px;
     margin-top: 0;
     margin-bottom: 20px;
+    color: #fff;
+    font-family: var(--font-dancing);
 }
 .pesan-box {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.2);
     padding: 20px;
     border-radius: 10px;
     margin: 20px 0;
-    border-top: 2px solid var(--warna-utama);
-    border-bottom: 2px solid var(--warna-utama);
+    min-height: 100px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 .pesan-box p {
     font-size: 18px;
     font-style: italic;
     line-height: 1.7;
     margin: 0;
+    color: #fff;
+    text-align: left; /* Biar ngetiknya rapi */
 }
+
+/* Kursor untuk animasi mengetik */
+.typing-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.2em;
+    background-color: #fff;
+    margin-left: 3px;
+    animation: blinkCursor 0.7s infinite;
+}
+@keyframes blinkCursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+
 .kartu-salam h4 {
     font-weight: 300;
     font-size: 16px;
     line-height: 1.5;
+    color: rgba(255, 255, 255, 0.8);
 }
 .kartu-salam h4 span {
     font-weight: 700;
-    color: var(--warna-utama);
-}
-
-.footer-global {
-    width: 100%;
-    padding: 20px 0;
-    text-align: center;
+    font-size: 28px;
     color: #fff;
-    background: rgba(0, 0, 0, 0.1);
-    margin-top: auto;
-}
-.footer-global p {
-    margin: 0 0 10px 0;
-    font-size: 14px;
-}
-.footer-global nav a {
-    color: #fff;
-    text-decoration: none;
-    margin: 0 10px;
-    font-weight: 700;
-}
-.footer-global nav a:hover {
-    text-decoration: underline;
+    font-family: var(--font-dancing);
 }
 
-.link-kembali {
-    display: block;
-    text-align: center;
-    margin-top: 20px;
-    color: var(--warna-utama);
-    text-decoration: none;
-    font-weight: 700;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Animasi untuk halaman saran */
-.anim-muncul-saran {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: anim-muncul-saran-frame 0.6s ease-out 0.2s forwards;
-}
-@keyframes anim-muncul-saran-frame {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* === CSS UNTUK ANIMASI BUKA PESAN (DIUPDATE) === */
-
-.animasi-amplop-container {
-    position: absolute; /* Posisikan absolut di dalam .kartu-salam */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: var(--warna-card); /* Sama dengan kartu */
-    border-radius: 20px;
-    z-index: 20; /* Lebih tinggi dari konten kartu */
-    opacity: 0; /* Mulai tersembunyi */
-    animation: fadeAmplopIn 0.5s ease-out forwards; /* Munculkan amplop */
-}
-
-.amplop-wrapper {
-    width: 120px; /* Sedikit lebih besar */
-    height: 120px;
-    position: relative;
-    animation: bounceIn 1s ease-out 0.5s forwards;
-    opacity: 0; /* Dimulai dari 0 untuk bounceIn */
-}
-
-.amplop-body {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 70px; /* Lebih tinggi */
-    background: #f4f4f4;
-    border-radius: 5px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.amplop-tutup {
-    position: absolute;
-    top: 0;
-    width: 0;
-    height: 0;
-    border-left: 60px solid transparent; /* Sesuai lebar amplop */
-    border-right: 60px solid transparent;
-    border-top: 50px solid #ddd; /* Lebih tinggi */
-    transform-origin: top;
-    z-index: 2; /* Agar di atas surat */
-    animation: bukaTutup 0.5s ease-out 1.5s forwards;
-}
-
-.amplop-surat {
-    position: absolute;
-    bottom: 0;
-    width: 100px; /* Sesuai lebar wrapper */
-    height: 60px; /* Lebih tinggi */
-    background: #fff;
-    border-radius: 3px;
-    left: 10px; /* Tengah */
-    font-size: 36px; /* Lebih besar */
-    text-align: center;
-    line-height: 60px;
-    z-index: 1; /* Di bawah tutup amplop */
-    animation: suratNaik 0.5s ease-out 2s forwards, suratBergerak 0.5s ease-out 2.5s forwards;
-}
-
-/* Kartu salam akan muncul setelah animasi amplop selesai */
-.kartu-salam.kartu-animasi {
-    transform-origin: center;
-    opacity: 0;
-    animation: flipIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 3.5s forwards; /* Delay lebih lama */
-}
-
-/* Keyframes untuk animasi */
-@keyframes fadeAmplopIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes bounceIn {
-    0% { opacity: 0; transform: scale(0.3); }
-    50% { opacity: 1; transform: scale(1.1); }
-    100% { opacity: 1; transform: scale(1); }
-}
-
-@keyframes bukaTutup {
-    from { transform: rotateX(0deg); }
-    to { transform: rotateX(180deg); }
-}
-
-@keyframes suratNaik {
-    from { transform: translateY(0); }
-    to { transform: translateY(-30px); } /* Surat naik sedikit */
-}
-
-@keyframes suratBergerak {
-    from { opacity: 1; }
-    to { opacity: 0; transform: translateY(-100px) scale(0.5); } /* Surat terbang keluar dan menghilang */
-}
-
-@keyframes flipIn {
-    from {
-        opacity: 0;
-        transform: rotateY(-70deg) scale(0.8);
-    }
-    to {
-        opacity: 1;
-        transform: rotateY(0) scale(1);
-    }
-}
-
-/* Animasi Amplop Menghilang saat kartu muncul */
-.animasi-amplop-container {
-    animation: fadeAmplopIn 0.5s ease-out forwards, fadeAmplopOut 0.5s ease-out 3.2s forwards; /* Tambah animasi keluar */
-}
-
-@keyframes fadeAmplopOut {
-    from { opacity: 1; transform: translateY(0); }
-    to { opacity: 0; transform: translateY(-50px); pointer-events: none; }
-}
-
-/* === Animasi Blink untuk nama tujuan === */
 .blink-me {
-    animation: blinkAnimation 1s steps(1, start) infinite; /* 1s per kedipan */
+    animation: blinkAnimation 1s steps(1, start) infinite;
 }
-
 @keyframes blinkAnimation {
     0% { opacity: 1; }
     50% { opacity: 0; }
     100% { opacity: 1; }
 }
 
-
-/* === TAMBAHAN UNTUK FONT & TOMBOL SUKA === */
-
-/* Terapkan font baru yang elegan */
-h2#targetPenerima,
-h4#targetPengirim span {
-    font-family: 'Dancing Script', cursive;
-    font-weight: 700;
-}
-
-h2#targetPenerima {
-    font-size: 48px; /* Lebih besar agar terlihat */
-}
-
-h4#targetPengirim span {
-    font-size: 28px;
-    color: var(--warna-utama);
-}
-
-/* Tombol Suka (Interaktif) */
 .tombol-suka {
     position: absolute;
     bottom: 15px;
     right: 20px;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.8);
     border: 1px solid #ddd;
     border-radius: 50%;
     width: 50px;
@@ -418,32 +337,45 @@ h4#targetPengirim span {
     align-items: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    z-index: 30; /* Di atas segalanya */
+    z-index: 30;
 }
-
 .tombol-suka:hover {
     transform: scale(1.1);
     background-color: #fdf2f2;
 }
-
-.tombol-suka i {
-    color: #ff6b6b;
-    transition: all 0.3s ease;
-}
-
-/* Animasi saat tombol diklik */
+.tombol-suka i { color: #ff6b6b; transition: all 0.3s ease; }
 .tombol-suka.liked i {
-    fill: #ff6b6b; /* Isi hati dengan warna */
+    fill: #ff6b6b;
     animation: heartBeat 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-
 @keyframes heartBeat {
     0% { transform: scale(1); }
     50% { transform: scale(1.3); }
     100% { transform: scale(1); }
 }
 
-/* Mengatur agar kartu tilt tidak merusak layout */
-.kartu-salam {
-    transform-style: preserve-3d;
+
+/* === FOOTER GLOBAL === */
+.footer-global {
+    width: 100%;
+    padding: 20px 0;
+    text-align: center;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.1);
+    margin-top: auto;
+}
+.footer-global p { margin: 0 0 10px 0; font-size: 14px; }
+.footer-global nav a {
+    color: #fff; text-decoration: none; margin: 0 10px; font-weight: 700;
+}
+.footer-global nav a:hover { text-decoration: underline; }
+
+/* === Animasi Bawaan === */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
