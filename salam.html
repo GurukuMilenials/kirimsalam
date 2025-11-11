@@ -12,9 +12,7 @@
 
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icon-192.png">
-    <meta name="theme-color" content="#a8c0ff">
-    
-    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color" content="#221b3a"> <link rel="stylesheet" href="style.css">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
@@ -22,38 +20,27 @@
     
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
-<body class="salam-page-body">
+<body class="salam-page-body-blank"> <input type="checkbox" id="envelope-trigger" class="hidden-trigger">
 
-    <div class="particle-container">
-        <div class="particle"></div><div class="particle"></div>
-        <div class="particle"></div><div class="particle"></div>
-        <div class="particle"></div><div class="particle"></div>
-        <div class="particle"></div><div class="particle"></div>
-        <div class="particle"></div><div class="particle"></div>
-    </div>
-
-    <main class="container">
+    <label for="envelope-trigger" class="envelope-label">
         
-        <div class="kartu-salam kartu-salam-reveal">
-            
-            <div class="kartu-header-animasi">
-                <div class="crystal-heart"></div>
-            </div>
-            <h3 class="konten-salam">Pesan Khusus Untuk,</h3>
-            <h2 id="targetPenerima" class="blink-me konten-salam">[Penerima]</h2>
-            
-            <div class="pesan-box konten-salam">
-                <p id="targetPesan"></p>
+        <div class="envelope-wrapper">
+            <div class="envelope-message">
+                <h3 id="targetPenerima">[Penerima]</h3>
+                <p id="targetPesan">[Pesan]</p>
+                <h4 id="targetPengirim">Dari, [Pengirim]</h4>
             </div>
             
-            <h4 class="konten-salam">Dari seseorang yang peduli,<br><span id="targetPengirim">[Pengirim]</span></h4>
-
-            <button type="button" id="tombolSuka" class="tombol-suka konten-salam" title="Suka ini!">
-                <i data-feather="heart"></i>
-            </button>
-            
+            <div class="envelope-back"></div>
+            <div class="envelope-flap-top"></div>
+            <div class="envelope-shadow"></div>
         </div>
-    </main>
+
+        <div class="click-to-open">
+            <span>Klik untuk Buka</span>
+        </div>
+    </label>
+
 
     <footer class="footer-global">
         <p>Copyright &copy; <span id="tahun"></span> by kirimsalamID - Awan &#10084;&#65039;</p>
@@ -62,8 +49,6 @@
             <a href="saran.html">Kritik & Saran</a>
         </nav>
     </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
     
     <script src="script.js"></script>
 </body>
