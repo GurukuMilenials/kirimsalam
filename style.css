@@ -308,3 +308,37 @@ textarea {
     background: linear-gradient(45deg, #1d976c, #59c173);
     transform: translateY(-3px) scale(1.02);
 }
+
+/* === TAMBAHAN UNTUK EMOJI TRAY (DARI API) === */
+
+.emoji-tray {
+    display: none; /* Sembunyi dulu */
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 5px;
+    
+    /* Membuat baris emoji */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.emoji-tray-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.emoji-tray-button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.emoji-tray small {
+    color: #555;
+    font-style: italic;
+}
