@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Feather icons akan jalan di semua halaman
     feather.replace();
 
     const spanTahun = document.getElementById('tahun');
@@ -86,14 +85,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- LOGIKA UNTUK salam.html ---
+    // --- LOGIKA UNTUK salam.html (DIUPDATE) ---
     if (document.body.contains(document.getElementById('targetPenerima'))) {
         
-        // 1. Tampilkan data (fungsi lama, tapi penting)
-        tampilkanSalam();
+        // 1. Tampilkan data
+        tampilkanSalam(); // Ini sekarang akan memicu typeMessage
 
-        // 2. ▼▼▼ LOGIKA BARU UNTUK TILT ▼▼▼
-        // Kita inisialisasi pada elemen .kartu-salam
+        // 2. Inisialisasi TILT
         if (window.VanillaTilt) {
             VanillaTilt.init(document.querySelector(".kartu-salam"), {
                 max: 15,
@@ -102,8 +100,22 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // 3. ▼▼▼ LOGIKA BARU UNTUK CONFETTI ▼▼▼
-        // Kita delay 3.5 detik (3500ms) agar confetti muncul setelah animasi kartu selesai
+        // 3. Inisialisasi Tombol Suka
+        const tombolSuka = document.getElementById('tombolSuka');
+        if (tombolSuka) {
+            tombolSuka.addEventListener('click', function() {
+                tombolSuka.classList.toggle('liked');
+                const icon = tombolSuka.querySelector('i');
+                if (tombolSuka.classList.contains('liked')) {
+                    icon.innerHTML = feather.icons['heart'].toSvg({ fill: '#ff6b6b' });
+                } else {
+                    icon.innerHTML = feather.icons['heart'].toSvg();
+                }
+            });
+        }
+        
+        // 4. Inisialisasi Confetti
+        // Kita delay 2.5 detik (sesuai delay animasi .pesan-box)
         setTimeout(() => {
             const confettiCanvas = document.createElement('canvas');
             confettiCanvas.style.position = 'fixed';
@@ -119,35 +131,44 @@ document.addEventListener('DOMContentLoaded', function() {
             const confetti = new ConfettiGenerator(confettiSettings);
             confetti.render();
 
-            // Hentikan confetti setelah 5 detik
             setTimeout(() => {
                 confetti.clear();
                 document.body.removeChild(confettiCanvas);
             }, 5000);
 
-        }, 3500); // 3.5 detik delay, sesuaikan dengan delay CSS 'flipIn' Anda
-
-        // 4. ▼▼▼ LOGIKA BARU UNTUK TOMBOL SUKA ▼▼▼
-        const tombolSuka = document.getElementById('tombolSuka');
-        if (tombolSuka) {
-            tombolSuka.addEventListener('click', function() {
-                // Toggle class 'liked'
-                tombolSuka.classList.toggle('liked');
-                
-                // Ganti ikonnya (opsional, tapi keren)
-                const icon = tombolSuka.querySelector('i');
-                if (tombolSuka.classList.contains('liked')) {
-                    icon.innerHTML = feather.icons['heart'].toSvg({ fill: '#ff6b6b' });
-                } else {
-                    icon.innerHTML = feather.icons['heart'].toSvg();
-                }
-            });
-        }
+        }, 2500); // Delay 2.5 detik
     }
 
 });
 
-// --- FUNGSI GLOBAL (Tidak Berubah) ---
+// --- FUNGSI GLOBAL (FUNGSI BARU DITAMBAHKAN) ---
+
+// ▼▼▼ FUNGSI BARU UNTUK MENGETIK PESAN ▼▼▼
+function typeMessage(element, message, speed = 50) {
+    let i = 0;
+    element.innerHTML = ''; // Kosongkan elemen
+    
+    // Tambahkan kursor
+    const cursor = document.createElement('span');
+    cursor.className = 'typing-cursor';
+    element.appendChild(cursor);
+
+    function typing() {
+        if (i < message.length) {
+            // Sisipkan karakter sebelum kursor
+            const char = document.createTextNode(message.charAt(i));
+            element.insertBefore(char, cursor);
+            i++;
+            setTimeout(typing, speed);
+        } else {
+            // Hapus kursor setelah selesai
+            cursor.remove();
+        }
+    }
+    
+    // Mulai animasi mengetik (tunggu CSS fade-in .pesan-box selesai)
+    setTimeout(typing, 2500); // Mulai ngetik setelah 2.5 detik
+}
 
 function buatLinkSalam() {
     const penerima = document.getElementById('namaPenerima').value;
@@ -158,27 +179,17 @@ function buatLinkSalam() {
         alert('Semua field harus diisi ya!');
         return;
     }
-
-    const dataSalam = {
-        u: penerima,
-        p: pesan,
-        d: pengirim
-    };
-
+    const dataSalam = { u: penerima, p: pesan, d: pengirim };
     const jsonString = JSON.stringify(dataSalam);
-    
     let encodedData;
     try {
         encodedData = encodeURIComponent(jsonString);
     } catch (error) {
-        console.error("Gagal encode:", error);
         alert("Gagal membuat link, karakter tidak didukung.");
         return;
     }
-
     const baseUrl = window.location.href.split('?')[0].replace('index.html', '');
     const finalUrl = `${baseUrl}salam.html#${encodedData}`;
-
     document.getElementById('linkFinal').value = finalUrl;
     document.getElementById('hasilLink').style.display = 'block';
 }
@@ -186,12 +197,9 @@ function buatLinkSalam() {
 function salinKeClipboard() {
     const linkInput = document.getElementById('linkFinal');
     const copyText = document.getElementById('copyText');
-
     if (!linkInput.value) return; 
-
     linkInput.select();
     linkInput.setSelectionRange(0, 99999);
-
     if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(linkInput.value).then(() => {
             copyText.textContent = 'Tersalin!';
@@ -214,34 +222,40 @@ function legacyCopy(inputElement, textElement) {
     }
 }
 
+// ▼▼▼ FUNGSI INI DIUPDATE UNTUK MEMANGGIL typeMessage ▼▼▼
 function tampilkanSalam() {
     const dataHash = window.location.hash.substring(1);
-
     if (!dataHash) {
         tampilkanErrorSalam("Link salam ini sepertinya kosong.");
         return;
     }
-
     try {
         const decodedString = decodeURIComponent(dataHash);
         const dataSalam = JSON.parse(decodedString);
-
         if (!dataSalam.u || !dataSalam.p || !dataSalam.d) {
             throw new Error('Data tidak lengkap');
         }
 
+        // Masukkan data yang instan
         document.getElementById('targetPenerima').textContent = dataSalam.u;
-        document.getElementById('targetPesan').textContent = `"${dataSalam.p}"`;
         document.getElementById('targetPengirim').textContent = dataSalam.d;
         
+        // Panggil fungsi typing untuk pesan
+        const pesanElement = document.getElementById('targetPesan');
+        const pesanTeks = `"${dataSalam.p}"`; // Tambahkan tanda kutip
+        typeMessage(pesanElement, pesanTeks, 60); // 60ms per karakter
+        
     } catch (error) {
-        console.error('Gagal parse data:', error.message);
         tampilkanErrorSalam("Link salam ini sepertinya rusak atau tidak valid.");
     }
 }
 
 function tampilkanErrorSalam(pesan) {
     document.getElementById('targetPenerima').textContent = "Oops! 😭";
-    document.getElementById('targetPesan').textContent = pesan;
+    // Jika error, kita panggil typeMessage juga agar konsisten
+    const pesanElement = document.getElementById('targetPesan');
+    if (pesanElement) {
+        typeMessage(pesanElement, pesan, 50);
+    }
     document.getElementById('targetPengirim').textContent = "kirimsalamID";
 }
