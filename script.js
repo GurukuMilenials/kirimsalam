@@ -20,7 +20,61 @@ document.addEventListener('DOMContentLoaded', function() {
     if (document.body.contains(document.getElementById('targetPenerima'))) {
         tampilkanSalam();
     }
+
+    const tombolEmoji = document.getElementById('tombolEmoji');
+    const emojiPicker = document.getElementById('emojiPicker');
+    const isiPesanTextarea = document.getElementById('isiPesan');
+
+    if (tombolEmoji && emojiPicker && isiPesanTextarea) {
+        tombolEmoji.addEventListener('click', () => {
+            emojiPicker.style.display = emojiPicker.style.display === 'block' ? 'none' : 'block';
+        });
+
+        emojiPicker.addEventListener('emoji-click', event => {
+            const emoji = event.detail.emoji.unicode;
+            const start = isiPesanTextarea.selectionStart;
+            const end = isiPesanTextarea.selectionEnd;
+            const text = isiPesanTextarea.value;
+            isiPesanTextarea.value = text.substring(0, start) + emoji + text.substring(end);
+            isiPesanTextarea.selectionStart = isiPesanTextarea.selectionEnd = start + emoji.length;
+            isiPesanTextarea.focus();
+            emojiPicker.style.display = 'none';
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!emojiPicker.contains(event.target) && event.target !== tombolEmoji) {
+                emojiPicker.style.display = 'none';
+            }
+        });
+    }
+
+    const tombolShare = document.getElementById('tombolShare');
+    
+    if (tombolShare && navigator.share) {
+        tombolShare.style.display = 'flex';
+        
+        tombolShare.addEventListener('click', async () => {
+            const shareUrl = document.getElementById('linkFinal').value;
+            if (!shareUrl) {
+                alert('Buat link dulu baru bisa dibagikan!');
+                return;
+            }
+
+            try {
+                await navigator.share({
+                    title: 'Kamu Dapat Salam!',
+                    text: 'Cek salam yang dibuat khusus untukmu di sini:',
+                    url: shareUrl
+                });
+                console.log('Berhasil dibagikan!');
+            } catch (err) {
+                console.warn('Gagal membagikan:', err.message);
+            }
+        });
+    }
+
 });
+
 
 function buatLinkSalam() {
     const penerima = document.getElementById('namaPenerima').value;
@@ -50,19 +104,32 @@ function buatLinkSalam() {
 
 function salinKeClipboard() {
     const linkInput = document.getElementById('linkFinal');
+    const copyText = document.getElementById('copyText');
+
+    if (!linkInput.value) return; 
+
     linkInput.select();
     linkInput.setSelectionRange(0, 99999);
 
-    try {
+    if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(linkInput.value).then(() => {
-            const copyText = document.getElementById('copyText');
             copyText.textContent = 'Tersalin!';
-            setTimeout(() => {
-                copyText.textContent = 'Salin';
-            }, 2000);
+            setTimeout(() => { copyText.textContent = 'Salin'; }, 2000);
+        }).catch(err => {
+            legacyCopy(linkInput, copyText);
         });
+    } else {
+        legacyCopy(linkInput, copyText);
+    }
+}
+
+function legacyCopy(inputElement, textElement) {
+    try {
+        document.execCommand('copy');
+        textElement.textContent = 'Tersalin!';
+        setTimeout(() => { textElement.textContent = 'Salin'; }, 2000);
     } catch (err) {
-        alert('Gagal menyalin link. Coba salin manual.');
+        alert('Gagal menyalin link. Mohon salin secara manual.');
     }
 }
 
