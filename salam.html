@@ -15,16 +15,21 @@
     <meta name="theme-color" content="#a8c0ff">
     
     <link rel="stylesheet" href="style.css">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
 
     <main class="container">
-        <div class="kartu-salam kartu-animasi">
+        
+        <div class="kartu-salam kartu-animasi" 
+             data-tilt 
+             data-tilt-max="15" 
+             data-tilt-speed="400" 
+             data-tilt-perspective="1000">
             
             <div class="animasi-amplop-container">
                 <div class="amplop-wrapper">
@@ -43,7 +48,11 @@
             </div>
             
             <h4>Dari seseorang yang peduli,<br><span id="targetPengirim">[Pengirim]</span></h4>
-        </div>
+
+            <button type="button" id="tombolSuka" class="tombol-suka" title="Suka ini!">
+                <i data-feather="heart"></i>
+            </button>
+            </div>
     </main>
 
     <footer class="footer-global">
@@ -54,6 +63,8 @@
         </nav>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
