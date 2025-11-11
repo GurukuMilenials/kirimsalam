@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Salam Kamu!</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 40px auto; padding: 20px; }
+        div { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], textarea {
+            width: 100%; padding: 8px; box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px; background-color: #007bff; color: white; border: none; cursor: pointer;
+        }
+        #hasilLink {
+            display: none; /* Sembunyi dulu */
+            margin-top: 20px;
+            background-color: #f0f0f0; padding: 15px; border-radius: 5px;
+        }
+        #linkFinal { background-color: #fff; }
+    </style>
+</head>
+<body>
+
+    <h2>💌 Buat Kartu Salam Digital</h2>
+    <p>Isi formulir di bawah dan dapatkan link unik untuk dibagikan.</p>
+
+    <form id="formSalam">
+        <div>
+            <label for="namaPenerima">Untuk Siapa?</label>
+            <input type="text" id="namaPenerima" placeholder="Cth: Ayah, Ibu, Ani" required>
+        </div>
+        <div>
+            <label for="isiPesan">Apa Pesanmu?</label>
+            <textarea id="isiPesan" rows="4" placeholder="Cth: Selamat ulang tahun! Semoga sehat selalu..." required></textarea>
+        </div>
+        <div>
+            <label for="namaPengirim">Dari Siapa?</label>
+            <input type="text" id="namaPengirim" placeholder="Cth: Budi" required>
+        </div>
+        <button type="button" id="tombolBuat">✨ Buat Link Salam!</button>
+    </form>
+
+    <div id="hasilLink">
+        <p>🎉 Berhasil! Copy link di bawah ini dan kirim ke temanmu:</p>
+        <input type="text" id="linkFinal" readonly>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
