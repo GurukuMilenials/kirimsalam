@@ -89,16 +89,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (document.body.contains(document.getElementById('targetPenerima'))) {
         
         // 1. Tampilkan data
-        tampilkanSalam(); // Ini sekarang akan memicu typeMessage
+        tampilkanSalam(); // Ini akan memicu typeMessage
 
-        // 2. Inisialisasi TILT
-        if (window.VanillaTilt) {
-            VanillaTilt.init(document.querySelector(".kartu-salam"), {
-                max: 15,
-                speed: 400,
-                perspective: 1000,
-            });
-        }
+        // 2. ▼▼▼ BLOK KODE TILT DIHAPUS ▼▼▼
 
         // 3. Inisialisasi Tombol Suka
         const tombolSuka = document.getElementById('tombolSuka');
@@ -115,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // 4. Inisialisasi Confetti
-        // Kita delay 2.5 detik (sesuai delay animasi .pesan-box)
+        // Delay 2.5 detik (sesuai delay animasi .pesan-box)
         setTimeout(() => {
             const confettiCanvas = document.createElement('canvas');
             confettiCanvas.style.position = 'fixed';
@@ -141,27 +134,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-// --- FUNGSI GLOBAL (FUNGSI BARU DITAMBAHKAN) ---
+// --- FUNGSI GLOBAL ---
 
-// ▼▼▼ FUNGSI BARU UNTUK MENGETIK PESAN ▼▼▼
 function typeMessage(element, message, speed = 50) {
     let i = 0;
-    element.innerHTML = ''; // Kosongkan elemen
+    element.innerHTML = '';
     
-    // Tambahkan kursor
     const cursor = document.createElement('span');
     cursor.className = 'typing-cursor';
     element.appendChild(cursor);
 
     function typing() {
         if (i < message.length) {
-            // Sisipkan karakter sebelum kursor
             const char = document.createTextNode(message.charAt(i));
             element.insertBefore(char, cursor);
             i++;
             setTimeout(typing, speed);
         } else {
-            // Hapus kursor setelah selesai
             cursor.remove();
         }
     }
@@ -222,7 +211,6 @@ function legacyCopy(inputElement, textElement) {
     }
 }
 
-// ▼▼▼ FUNGSI INI DIUPDATE UNTUK MEMANGGIL typeMessage ▼▼▼
 function tampilkanSalam() {
     const dataHash = window.location.hash.substring(1);
     if (!dataHash) {
@@ -236,14 +224,12 @@ function tampilkanSalam() {
             throw new Error('Data tidak lengkap');
         }
 
-        // Masukkan data yang instan
         document.getElementById('targetPenerima').textContent = dataSalam.u;
         document.getElementById('targetPengirim').textContent = dataSalam.d;
         
-        // Panggil fungsi typing untuk pesan
         const pesanElement = document.getElementById('targetPesan');
-        const pesanTeks = `"${dataSalam.p}"`; // Tambahkan tanda kutip
-        typeMessage(pesanElement, pesanTeks, 60); // 60ms per karakter
+        const pesanTeks = `"${dataSalam.p}"`;
+        typeMessage(pesanElement, pesanTeks, 60);
         
     } catch (error) {
         tampilkanErrorSalam("Link salam ini sepertinya rusak atau tidak valid.");
@@ -252,7 +238,6 @@ function tampilkanSalam() {
 
 function tampilkanErrorSalam(pesan) {
     document.getElementById('targetPenerima').textContent = "Oops! 😭";
-    // Jika error, kita panggil typeMessage juga agar konsisten
     const pesanElement = document.getElementById('targetPesan');
     if (pesanElement) {
         typeMessage(pesanElement, pesan, 50);
