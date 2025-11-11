@@ -4,13 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>kirimsalamID - Buat Salam Digitalmu</title>
-    <link rel="stylesheet" href="style.css">
     
+    <meta property="og:title" content="kirimsalamID">
+    <meta property="og:description" content="Buat dan bagikan kartu salam digital dengan mudah.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kirimsalamid.vercel.app/"> <meta property="og:image" content="https://kirimsalamid.vercel.app/icon-512.png"> <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <meta name="theme-color" content="#a8c0ff">
+    
+    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/feather-icons"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
 </head>
 <body>
 
@@ -24,10 +32,17 @@
                     <label for="namaPenerima">Untuk Siapa?</label>
                     <input type="text" id="namaPenerima" placeholder="Cth: Ayang" required>
                 </div>
-                <div class="input-group">
-                    <label for="isiPesan">Apa Pesanmu?</label>
-                    <textarea id="isiPesan" rows="4" placeholder="Ketik pesanmu di sini... (coba Win + . untuk emoji 😉)" required></textarea>
+
+                <div class="input-group emoji-container">
+                    <div class="label-wrapper">
+                        <label for="isiPesan">Apa Pesanmu?</label>
+                        <button type="button" id="tombolEmoji" class="btn-emoji" title="Pilih Emoji">😀</button>
+                    </div>
+                    <textarea id="isiPesan" rows="4" placeholder="Ketik pesanmu di sini..." required></textarea>
+                    
+                    <emoji-picker id="emojiPicker" class="light"></emoji-picker>
                 </div>
+                
                 <div class="input-group">
                     <label for="namaPengirim">Dari Siapa?</label>
                     <input type="text" id="namaPengirim" placeholder="Cth: Pengagum Rahasiamu" required>
@@ -46,6 +61,10 @@
                         <span id="copyText">Salin</span>
                     </button>
                 </div>
+                
+                <button type="button" id="tombolShare" class="btn-utama btn-share-native" style="display: none;">
+                    <i data-feather="share-2"></i> Bagikan (via Aplikasi)
+                </button>
             </div>
         </div>
     </main>
