@@ -342,3 +342,100 @@ textarea {
     color: #555;
     font-style: italic;
 }
+
+/* === CSS UNTUK ANIMASI BUKA PESAN === */
+
+.animasi-amplop-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: -30px; /* Bikin tumpang tindih dengan kartu */
+    position: relative;
+    z-index: 10;
+}
+
+.amplop-wrapper {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    /* Menerapkan animasi di sini */
+    animation: bounceIn 1s ease-out 0.5s forwards;
+    opacity: 0;
+}
+
+.amplop-body {
+    position: absolute;
+    bottom: 0;
+    width: 100px;
+    height: 60px;
+    background: #f4f4f4;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.amplop-tutup {
+    position: absolute;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-top: 40px solid #ddd;
+    transform-origin: top;
+    
+    /* Animasi tutupnya terbuka */
+    animation: bukaTutup 0.5s ease-out 1.5s forwards;
+}
+
+.amplop-surat {
+    position: absolute;
+    bottom: 0;
+    width: 90px;
+    height: 50px;
+    background: #fff;
+    border-radius: 3px;
+    left: 5px;
+    font-size: 30px;
+    text-align: center;
+    line-height: 50px;
+    
+    /* Animasi suratnya keluar */
+    animation: suratNaik 0.5s ease-out 2s forwards;
+}
+
+/* Kartu salam baru akan muncul setelah animasi amplop */
+.kartu-animasi {
+    transform-origin: center;
+    opacity: 0;
+    /* Delay animasi kartu agar muncul setelah amplop */
+    animation: flipIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2.5s forwards;
+}
+
+/* Keyframes untuk animasi */
+@keyframes bounceIn {
+    0% { opacity: 0; transform: scale(0.3); }
+    50% { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes bukaTutup {
+    from { transform: rotateX(0deg); }
+    to { transform: rotateX(180deg); }
+}
+
+@keyframes suratNaik {
+    from { height: 50px; }
+    to { height: 80px; }
+}
+
+/* Kita harus menimpa animasi kartu-animasi lama */
+@keyframes flipIn {
+    from {
+        opacity: 0;
+        transform: rotateY(-70deg) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: rotateY(0) scale(1);
+    }
+}
