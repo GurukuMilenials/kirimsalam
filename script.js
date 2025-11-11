@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    // BARIS INI YANG SEBELUMNYA CRASH
-    // Sekarang tidak akan crash karena HTML sudah memuat feather.js
+    // Feather icons akan jalan di semua halaman
     feather.replace();
 
     const spanTahun = document.getElementById('tahun');
@@ -9,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
         spanTahun.textContent = new Date().getFullYear();
     }
 
+    // --- LOGIKA UNTUK index.html ---
     const tombolBuat = document.getElementById('tombolBuat');
     if (tombolBuat) {
         tombolBuat.addEventListener('click', buatLinkSalam);
@@ -19,13 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
         tombolCopy.addEventListener('click', salinKeClipboard);
     }
 
-    // Periksa jika kita di halaman salam.html
-    if (document.body.contains(document.getElementById('targetPenerima'))) {
-        // FUNGSI INI SEKARANG AKAN BERJALAN
-        tampilkanSalam();
-    }
-
-    // Periksa jika kita di halaman index.html (ada tombol emoji)
     const tombolEmoji = document.getElementById('tombolEmoji');
     const isiPesanTextarea = document.getElementById('isiPesan');
     const emojiTray = document.getElementById('emojiTray');
@@ -41,29 +34,18 @@ document.addEventListener('DOMContentLoaded', function() {
         async function loadEmojis() {
             try {
                 const response = await fetch(`https://emoji-api.com/emojis?category=smileys-emotion&access_key=${API_KEY}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                 const emojis = await response.json();
-                
-                emojiTray.innerHTML = ''; // Bersihkan "Loading..."
-
-                // Ambil 24 emoji pertama
+                emojiTray.innerHTML = '';
                 emojis.slice(0, 24).forEach(emoji => {
                     const btn = document.createElement('button');
                     btn.type = 'button';
                     btn.className = 'emoji-tray-button';
                     btn.textContent = emoji.character;
                     btn.title = emoji.unicodeName;
-                    
-                    btn.addEventListener('click', () => {
-                        insertEmoji(emoji.character);
-                    });
-                    
+                    btn.addEventListener('click', () => insertEmoji(emoji.character));
                     emojiTray.appendChild(btn);
                 });
-
             } catch (error) {
                 console.error("Error fetching emojis:", error);
                 emojiTray.innerHTML = `<small>Gagal memuat emoji. Error: ${error.message}</small>`;
@@ -77,27 +59,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const start = isiPesanTextarea.selectionStart;
             const end = isiPesanTextarea.selectionEnd;
             const text = isiPesanTextarea.value;
-            
             isiPesanTextarea.value = text.substring(0, start) + emoji + text.substring(end);
-            
             isiPesanTextarea.selectionStart = isiPesanTextarea.selectionEnd = start + emoji.length;
             isiPesanTextarea.focus();
         }
     }
 
-
     const tombolShare = document.getElementById('tombolShare');
-    
     if (tombolShare && navigator.share) {
         tombolShare.style.display = 'flex';
-        
         tombolShare.addEventListener('click', async () => {
             const shareUrl = document.getElementById('linkFinal').value;
             if (!shareUrl) {
                 alert('Buat link dulu baru bisa dibagikan!');
                 return;
             }
-
             try {
                 await navigator.share({
                     title: 'Kamu Dapat Salam!',
@@ -110,8 +86,68 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // --- LOGIKA UNTUK salam.html ---
+    if (document.body.contains(document.getElementById('targetPenerima'))) {
+        
+        // 1. Tampilkan data (fungsi lama, tapi penting)
+        tampilkanSalam();
+
+        // 2. ▼▼▼ LOGIKA BARU UNTUK TILT ▼▼▼
+        // Kita inisialisasi pada elemen .kartu-salam
+        if (window.VanillaTilt) {
+            VanillaTilt.init(document.querySelector(".kartu-salam"), {
+                max: 15,
+                speed: 400,
+                perspective: 1000,
+            });
+        }
+
+        // 3. ▼▼▼ LOGIKA BARU UNTUK CONFETTI ▼▼▼
+        // Kita delay 3.5 detik (3500ms) agar confetti muncul setelah animasi kartu selesai
+        setTimeout(() => {
+            const confettiCanvas = document.createElement('canvas');
+            confettiCanvas.style.position = 'fixed';
+            confettiCanvas.style.top = '0';
+            confettiCanvas.style.left = '0';
+            confettiCanvas.style.width = '100%';
+            confettiCanvas.style.height = '100%';
+            confettiCanvas.style.zIndex = '100';
+            confettiCanvas.style.pointerEvents = 'none';
+            document.body.appendChild(confettiCanvas);
+
+            const confettiSettings = { target: confettiCanvas, max: 150 };
+            const confetti = new ConfettiGenerator(confettiSettings);
+            confetti.render();
+
+            // Hentikan confetti setelah 5 detik
+            setTimeout(() => {
+                confetti.clear();
+                document.body.removeChild(confettiCanvas);
+            }, 5000);
+
+        }, 3500); // 3.5 detik delay, sesuaikan dengan delay CSS 'flipIn' Anda
+
+        // 4. ▼▼▼ LOGIKA BARU UNTUK TOMBOL SUKA ▼▼▼
+        const tombolSuka = document.getElementById('tombolSuka');
+        if (tombolSuka) {
+            tombolSuka.addEventListener('click', function() {
+                // Toggle class 'liked'
+                tombolSuka.classList.toggle('liked');
+                
+                // Ganti ikonnya (opsional, tapi keren)
+                const icon = tombolSuka.querySelector('i');
+                if (tombolSuka.classList.contains('liked')) {
+                    icon.innerHTML = feather.icons['heart'].toSvg({ fill: '#ff6b6b' });
+                } else {
+                    icon.innerHTML = feather.icons['heart'].toSvg();
+                }
+            });
+        }
+    }
+
 });
 
+// --- FUNGSI GLOBAL (Tidak Berubah) ---
 
 function buatLinkSalam() {
     const penerima = document.getElementById('namaPenerima').value;
@@ -131,7 +167,6 @@ function buatLinkSalam() {
 
     const jsonString = JSON.stringify(dataSalam);
     
-    // Ini adalah metode enkripsi yang benar dan paling sederhana
     let encodedData;
     try {
         encodedData = encodeURIComponent(jsonString);
@@ -188,9 +223,7 @@ function tampilkanSalam() {
     }
 
     try {
-        // Ini adalah metode dekripsi yang benar
         const decodedString = decodeURIComponent(dataHash);
-
         const dataSalam = JSON.parse(decodedString);
 
         if (!dataSalam.u || !dataSalam.p || !dataSalam.d) {
