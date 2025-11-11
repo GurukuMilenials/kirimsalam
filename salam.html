@@ -22,22 +22,23 @@
     
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
-<body class="salam-page-body"> <div class="particle-container">
+<body class="salam-page-body">
+
+    <div class="particle-container">
         <div class="particle"></div><div class="particle"></div>
         <div class="particle"></div><div class="particle"></div>
         <div class="particle"></div><div class="particle"></div>
         <div class="particle"></div><div class="particle"></div>
         <div class="particle"></div><div class="particle"></div>
     </div>
+
     <main class="container">
         
-        <div class="kartu-salam kartu-animasi-baru" 
-             data-tilt 
-             data-tilt-max="15" 
-             data-tilt-speed="400" 
-             data-tilt-perspective="1000">
+        <div class="kartu-salam kartu-salam-reveal">
             
-            <div class="kartu-shine"></div>
+            <div class="kartu-header-animasi">
+                <div class="crystal-heart"></div>
+            </div>
             <h3 class="konten-salam">Pesan Khusus Untuk,</h3>
             <h2 id="targetPenerima" class="blink-me konten-salam">[Penerima]</h2>
             
@@ -63,8 +64,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
-
+    
     <script src="script.js"></script>
 </body>
 </html>
