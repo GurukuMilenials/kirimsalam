@@ -17,37 +17,38 @@ document.addEventListener('DOMContentLoaded', function() {
         tombolCopy.addEventListener('click', salinKeClipboard);
     }
 
+    // Periksa jika kita di halaman salam.html
     if (document.body.contains(document.getElementById('targetPenerima'))) {
+        // Langsung panggil fungsinya
         tampilkanSalam();
     }
 
-    // === ▼▼▼ LOGIKA EMOJI BARU (MENGGUNAKAN API ANDA) ▼▼▼ ===
+    // Periksa jika kita di halaman index.html (ada tombol emoji)
     const tombolEmoji = document.getElementById('tombolEmoji');
     const isiPesanTextarea = document.getElementById('isiPesan');
     const emojiTray = document.getElementById('emojiTray');
-    const API_KEY = "837e03e18940e8ba6d769ebeb8a3b97a31eb6d47";
-
+    
     if (tombolEmoji && isiPesanTextarea && emojiTray) {
+        // Hanya panggil API jika kita di halaman index
+        const API_KEY = "837e03e18940e8ba6d769ebeb8a3b97a31eb6d47";
         
-        // 1. Tampilkan/Sembunyikan tray
         tombolEmoji.addEventListener('click', () => {
             const isVisible = emojiTray.style.display === 'flex';
             emojiTray.style.display = isVisible ? 'none' : 'flex';
         });
 
-        // 2. Ambil data dari API Anda
         async function loadEmojis() {
             try {
-                // Kita ambil hanya kategori smileys-emotion
                 const response = await fetch(`https://emoji-api.com/emojis?category=smileys-emotion&access_key=${API_KEY}`);
-                if (!response.ok) throw new Error('Gagal ambil data emoji');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
                 
                 const emojis = await response.json();
                 
-                // Bersihkan "Loading..."
-                emojiTray.innerHTML = ''; 
+                emojiTray.innerHTML = ''; // Bersihkan "Loading..."
 
-                // Ambil 24 emoji pertama saja
+                // Ambil 24 emoji pertama
                 emojis.slice(0, 24).forEach(emoji => {
                     const btn = document.createElement('button');
                     btn.type = 'button';
@@ -55,7 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     btn.textContent = emoji.character;
                     btn.title = emoji.unicodeName;
                     
-                    // 3. Masukkan emoji ke textarea saat diklik
                     btn.addEventListener('click', () => {
                         insertEmoji(emoji.character);
                     });
@@ -64,15 +64,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
             } catch (error) {
-                console.error(error);
-                emojiTray.innerHTML = '<small>Gagal memuat emoji.</small>';
+                console.error("Error fetching emojis:", error);
+                // Tampilkan error ke pengguna
+                emojiTray.innerHTML = `<small>Gagal memuat emoji. Error: ${error.message}</small>`;
+                emojiTray.style.display = 'flex'; // Paksa tampilkan tray error
             }
         }
         
-        // Panggil API-nya
         loadEmojis();
 
-        // Fungsi helper untuk memasukkan teks di posisi kursor
         function insertEmoji(emoji) {
             const start = isiPesanTextarea.selectionStart;
             const end = isiPesanTextarea.selectionEnd;
@@ -84,7 +84,6 @@ document.addEventListener('DOMContentLoaded', function() {
             isiPesanTextarea.focus();
         }
     }
-    // === ▲▲▲ AKHIR LOGIKA EMOJI BARU ▲▲▲ ===
 
 
     const tombolShare = document.getElementById('tombolShare');
@@ -113,32 +112,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-// === ▼▼▼ PERBAIKAN ENKRIPSI ANTI-GAGAL (KUNCI MASALAH DATA) ▼▼▼ ===
-function encodeSafe(str) {
-    try {
-        // 1. Ubah string (termasuk emoji) ke format aman-URL
-        const encodedUri = encodeURIComponent(str);
-        // 2. Baru di-Base64
-        return btoa(encodedUri);
-    } catch (e) {
-        console.error('encodeSafe error:', e);
-        return null;
-    }
-}
-
-function decodeSafe(str) {
-    try {
-        // 1. Kembalikan dari Base64
-        const decodedUri = atob(str);
-        // 2. Kembalikan dari format aman-URL (ini akan memunculkan emoji lagi)
-        return decodeURIComponent(decodedUri);
-    } catch (e) {
-        console.error('decodeSafe error:', e);
-        return null;
-    }
-}
-// === ▲▲▲ AKHIR FUNGSI PERBAIKAN ▲▲▲ ===
-
+// === TIDAK ADA LAGI FUNGSI encodeSafe / decodeSafe ===
+// Kita akan enkripsi langsung di dalam fungsi.
 
 function buatLinkSalam() {
     const penerima = document.getElementById('namaPenerima').value;
@@ -158,12 +133,17 @@ function buatLinkSalam() {
 
     const jsonString = JSON.stringify(dataSalam);
     
-    // Gunakan fungsi enkripsi baru yang anti-gagal
-    const encodedData = encodeSafe(jsonString);
-    if (!encodedData) {
-        alert('Terjadi kesalahan saat membuat link. Coba kurangi emoji atau karakter spesial.');
+    // === ▼▼▼ PERBAIKAN ENKRIPSI (METODE PALING SIMPEL) ▼▼▼ ===
+    // Tidak perlu Base64. Cukup encode untuk URL. Ini 100% aman-emoji.
+    let encodedData;
+    try {
+        encodedData = encodeURIComponent(jsonString);
+    } catch (error) {
+        console.error("Gagal encode:", error);
+        alert("Gagal membuat link, karakter tidak didukung.");
         return;
     }
+    // === ▲▲▲ AKHIR PERBAIKAN ENKRIPSI ▲▲▲ ===
 
     const baseUrl = window.location.href.split('?')[0].replace('index.html', '');
     const finalUrl = `${baseUrl}salam.html#${encodedData}`;
@@ -212,9 +192,9 @@ function tampilkanSalam() {
     }
 
     try {
-        // Gunakan fungsi dekripsi baru yang anti-gagal
-        const decodedString = decodeSafe(dataHash);
-        if (!decodedString) throw new Error('Data korup');
+        // === ▼▼▼ PERBAIKAN DEKRIPSI (METODE PALING SIMPEL) ▼▼▼ ===
+        const decodedString = decodeURIComponent(dataHash);
+        // === ▲▲▲ AKHIR PERBAIKAN DEKRIPSI ▲▲▲ ===
 
         const dataSalam = JSON.parse(decodedString);
 
@@ -228,6 +208,7 @@ function tampilkanSalam() {
         
     } catch (error) {
         console.error('Gagal parse data:', error.message);
+        // Ini adalah pesan yang seharusnya Anda lihat jika datanya rusak
         tampilkanErrorSalam("Link salam ini sepertinya rusak atau tidak valid.");
     }
 }
