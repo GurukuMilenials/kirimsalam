@@ -1,0 +1,263 @@
+:root {
+    --warna-bg1: #a8c0ff;
+    --warna-bg2: #fbc2eb;
+    --warna-card: rgba(255, 255, 255, 0.85);
+    --warna-teks: #333;
+    --warna-utama: #6a11cb;
+    --warna-utama-hover: #2575fc;
+    --font-utama: 'Poppins', sans-serif;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: var(--font-utama);
+    color: var(--warna-teks);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(-45deg, var(--warna-bg2), var(--warna-bg1), #a8c0ff, #fbc2eb);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.card, .kartu-salam {
+    background: var(--warna-card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px 40px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.card h2, .kartu-salam h2 {
+    text-align: center;
+    color: var(--warna-utama);
+    margin-top: 0;
+}
+.card p, .kartu-salam p {
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    animation: slideUp 0.5s ease-out forwards;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: rgba(255, 255, 255, 0.5);
+    font-family: var(--font-utama);
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus, textarea:focus {
+    outline: none;
+    border-color: var(--warna-utama);
+    box-shadow: 0 0 10px rgba(106, 17, 203, 0.2);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.btn-utama {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(45deg, var(--warna-utama), var(--warna-utama-hover));
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-utama:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-utama i {
+    width: 20px;
+    height: 20px;
+}
+
+.hasil-container {
+    display: none;
+    margin-top: 25px;
+    animation: fadeIn 0.5s ease;
+}
+.hasil-container p {
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.input-copy-wrapper {
+    display: flex;
+}
+
+#linkFinal {
+    flex-grow: 1;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    background-color: #f0f0f0;
+}
+
+.btn-copy {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 15px;
+    border: none;
+    background: var(--warna-utama);
+    color: white;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-copy:hover {
+    background: var(--warna-utama-hover);
+}
+
+.kartu-salam {
+    text-align: center;
+}
+.kartu-salam h3 {
+    font-weight: 300;
+    font-size: 18px;
+}
+.kartu-salam h2 {
+    font-size: 32px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+.pesan-box {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border-top: 2px solid var(--warna-utama);
+    border-bottom: 2px solid var(--warna-utama);
+}
+.pesan-box p {
+    font-size: 18px;
+    font-style: italic;
+    line-height: 1.7;
+    margin: 0;
+}
+.kartu-salam h4 {
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.5;
+}
+.kartu-salam h4 span {
+    font-weight: 700;
+    color: var(--warna-utama);
+}
+
+.footer-global {
+    width: 100%;
+    padding: 20px 0;
+    text-align: center;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.1);
+    margin-top: auto;
+}
+.footer-global p {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+}
+.footer-global nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: 700;
+}
+.footer-global nav a:hover {
+    text-decoration: underline;
+}
+
+.link-kembali {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: var(--warna-utama);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.anim-muncul {
+    opacity: 0;
+    transform: scale(0.9);
+    animation: anim-muncul-frame 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s forwards;
+}
+@keyframes anim-muncul-frame {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.anim-muncul-saran {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: anim-muncul-saran-frame 0.6s ease-out 0.2s forwards;
+}
+@keyframes anim-muncul-saran-frame {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
