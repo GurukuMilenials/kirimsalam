@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     
+    // BARIS INI YANG SEBELUMNYA CRASH
+    // Sekarang tidak akan crash karena HTML sudah memuat feather.js
     feather.replace();
 
     const spanTahun = document.getElementById('tahun');
@@ -19,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Periksa jika kita di halaman salam.html
     if (document.body.contains(document.getElementById('targetPenerima'))) {
-        // Langsung panggil fungsinya
+        // FUNGSI INI SEKARANG AKAN BERJALAN
         tampilkanSalam();
     }
 
@@ -29,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const emojiTray = document.getElementById('emojiTray');
     
     if (tombolEmoji && isiPesanTextarea && emojiTray) {
-        // Hanya panggil API jika kita di halaman index
         const API_KEY = "837e03e18940e8ba6d769ebeb8a3b97a31eb6d47";
         
         tombolEmoji.addEventListener('click', () => {
@@ -65,9 +66,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             } catch (error) {
                 console.error("Error fetching emojis:", error);
-                // Tampilkan error ke pengguna
                 emojiTray.innerHTML = `<small>Gagal memuat emoji. Error: ${error.message}</small>`;
-                emojiTray.style.display = 'flex'; // Paksa tampilkan tray error
+                emojiTray.style.display = 'flex';
             }
         }
         
@@ -112,8 +112,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-// === TIDAK ADA LAGI FUNGSI encodeSafe / decodeSafe ===
-// Kita akan enkripsi langsung di dalam fungsi.
 
 function buatLinkSalam() {
     const penerima = document.getElementById('namaPenerima').value;
@@ -133,8 +131,7 @@ function buatLinkSalam() {
 
     const jsonString = JSON.stringify(dataSalam);
     
-    // === ▼▼▼ PERBAIKAN ENKRIPSI (METODE PALING SIMPEL) ▼▼▼ ===
-    // Tidak perlu Base64. Cukup encode untuk URL. Ini 100% aman-emoji.
+    // Ini adalah metode enkripsi yang benar dan paling sederhana
     let encodedData;
     try {
         encodedData = encodeURIComponent(jsonString);
@@ -143,7 +140,6 @@ function buatLinkSalam() {
         alert("Gagal membuat link, karakter tidak didukung.");
         return;
     }
-    // === ▲▲▲ AKHIR PERBAIKAN ENKRIPSI ▲▲▲ ===
 
     const baseUrl = window.location.href.split('?')[0].replace('index.html', '');
     const finalUrl = `${baseUrl}salam.html#${encodedData}`;
@@ -192,9 +188,8 @@ function tampilkanSalam() {
     }
 
     try {
-        // === ▼▼▼ PERBAIKAN DEKRIPSI (METODE PALING SIMPEL) ▼▼▼ ===
+        // Ini adalah metode dekripsi yang benar
         const decodedString = decodeURIComponent(dataHash);
-        // === ▲▲▲ AKHIR PERBAIKAN DEKRIPSI ▲▲▲ ===
 
         const dataSalam = JSON.parse(decodedString);
 
@@ -208,7 +203,6 @@ function tampilkanSalam() {
         
     } catch (error) {
         console.error('Gagal parse data:', error.message);
-        // Ini adalah pesan yang seharusnya Anda lihat jika datanya rusak
         tampilkanErrorSalam("Link salam ini sepertinya rusak atau tidak valid.");
     }
 }
