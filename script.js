@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     
+    // Feather icons tetap jalan
     feather.replace();
 
     const spanTahun = document.getElementById('tahun');
@@ -7,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
         spanTahun.textContent = new Date().getFullYear();
     }
 
-    // --- LOGIKA UNTUK index.html ---
+    // --- LOGIKA UNTUK index.html (Tidak Berubah) ---
     const tombolBuat = document.getElementById('tombolBuat');
     if (tombolBuat) {
         tombolBuat.addEventListener('click', buatLinkSalam);
@@ -85,79 +86,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- LOGIKA UNTUK salam.html (DIUPDATE) ---
+    // --- LOGIKA UNTUK salam.html (DIUPDATE & DISEDERHANAKAN) ---
     if (document.body.contains(document.getElementById('targetPenerima'))) {
         
-        // 1. Tampilkan data
-        tampilkanSalam(); // Ini akan memicu typeMessage
-
-        // 2. ▼▼▼ BLOK KODE TILT DIHAPUS ▼▼▼
-
-        // 3. Inisialisasi Tombol Suka
-        const tombolSuka = document.getElementById('tombolSuka');
-        if (tombolSuka) {
-            tombolSuka.addEventListener('click', function() {
-                tombolSuka.classList.toggle('liked');
-                const icon = tombolSuka.querySelector('i');
-                if (tombolSuka.classList.contains('liked')) {
-                    icon.innerHTML = feather.icons['heart'].toSvg({ fill: '#ff6b6b' });
-                } else {
-                    icon.innerHTML = feather.icons['heart'].toSvg();
-                }
-            });
-        }
-        
-        // 4. Inisialisasi Confetti
-        // Delay 2.5 detik (sesuai delay animasi .pesan-box)
-        setTimeout(() => {
-            const confettiCanvas = document.createElement('canvas');
-            confettiCanvas.style.position = 'fixed';
-            confettiCanvas.style.top = '0';
-            confettiCanvas.style.left = '0';
-            confettiCanvas.style.width = '100%';
-            confettiCanvas.style.height = '100%';
-            confettiCanvas.style.zIndex = '100';
-            confettiCanvas.style.pointerEvents = 'none';
-            document.body.appendChild(confettiCanvas);
-
-            const confettiSettings = { target: confettiCanvas, max: 150 };
-            const confetti = new ConfettiGenerator(confettiSettings);
-            confetti.render();
-
-            setTimeout(() => {
-                confetti.clear();
-                document.body.removeChild(confettiCanvas);
-            }, 5000);
-
-        }, 2500); // Delay 2.5 detik
+        // Cukup panggil fungsi tampilkanSalam.
+        // Tidak ada Tilt, Confetti, atau Tombol Suka.
+        tampilkanSalam(); 
     }
 
 });
 
 // --- FUNGSI GLOBAL ---
 
-function typeMessage(element, message, speed = 50) {
-    let i = 0;
-    element.innerHTML = '';
-    
-    const cursor = document.createElement('span');
-    cursor.className = 'typing-cursor';
-    element.appendChild(cursor);
-
-    function typing() {
-        if (i < message.length) {
-            const char = document.createTextNode(message.charAt(i));
-            element.insertBefore(char, cursor);
-            i++;
-            setTimeout(typing, speed);
-        } else {
-            cursor.remove();
-        }
-    }
-    
-    // Mulai animasi mengetik (tunggu CSS fade-in .pesan-box selesai)
-    setTimeout(typing, 2500); // Mulai ngetik setelah 2.5 detik
-}
+// FUNGSI typeMessage DIHAPUS
 
 function buatLinkSalam() {
     const penerima = document.getElementById('namaPenerima').value;
@@ -211,6 +152,7 @@ function legacyCopy(inputElement, textElement) {
     }
 }
 
+// ▼▼▼ FUNGSI INI DIUPDATE MENJADI SUPER SIMPEL ▼▼▼
 function tampilkanSalam() {
     const dataHash = window.location.hash.substring(1);
     if (!dataHash) {
@@ -224,12 +166,10 @@ function tampilkanSalam() {
             throw new Error('Data tidak lengkap');
         }
 
+        // Cukup masukkan teks. Animasi CSS akan mengurus sisanya.
         document.getElementById('targetPenerima').textContent = dataSalam.u;
-        document.getElementById('targetPengirim').textContent = dataSalam.d;
-        
-        const pesanElement = document.getElementById('targetPesan');
-        const pesanTeks = `"${dataSalam.p}"`;
-        typeMessage(pesanElement, pesanTeks, 60);
+        document.getElementById('targetPesan').textContent = `"${dataSalam.p}"`;
+        document.getElementById('targetPengirim').textContent = `Dari, ${dataSalam.d}`;
         
     } catch (error) {
         tampilkanErrorSalam("Link salam ini sepertinya rusak atau tidak valid.");
@@ -238,9 +178,9 @@ function tampilkanSalam() {
 
 function tampilkanErrorSalam(pesan) {
     document.getElementById('targetPenerima').textContent = "Oops! 😭";
-    const pesanElement = document.getElementById('targetPesan');
-    if (pesanElement) {
-        typeMessage(pesanElement, pesan, 50);
-    }
-    document.getElementById('targetPengirim').textContent = "kirimsalamID";
+    document.getElementById('targetPesan').textContent = pesan;
+    document.getElementById('targetPengirim').textContent = "Dari, kirimsalamID";
+    
+    // Paksa buka amplop jika ada error
+    document.getElementById('envelope-trigger').checked = true;
 }
