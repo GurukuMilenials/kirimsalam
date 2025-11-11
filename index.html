@@ -3,50 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buat Salam Kamu!</title>
-    <style>
-        body { font-family: sans-serif; max-width: 500px; margin: 40px auto; padding: 20px; }
-        div { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input[type="text"], textarea {
-            width: 100%; padding: 8px; box-sizing: border-box;
-        }
-        button {
-            padding: 10px 20px; background-color: #007bff; color: white; border: none; cursor: pointer;
-        }
-        #hasilLink {
-            display: none; /* Sembunyi dulu */
-            margin-top: 20px;
-            background-color: #f0f0f0; padding: 15px; border-radius: 5px;
-        }
-        #linkFinal { background-color: #fff; }
-    </style>
+    <title>kirimsalamID - Buat Salam Digitalmu</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
 
-    <h2>💌 Buat Kartu Salam Digital</h2>
-    <p>Isi formulir di bawah dan dapatkan link unik untuk dibagikan.</p>
+    <main class="container">
+        <div class="card">
+            <h2>Kirim Salam Digital 💌</h2>
+            <p>Bagikan pesan hangat untuk orang terdekatmu.</p>
+            
+            <form id="formSalam">
+                <div class="input-group">
+                    <label for="namaPenerima">Untuk Siapa?</label>
+                    <input type="text" id="namaPenerima" placeholder="Cth: Ayang" required>
+                </div>
+                <div class="input-group">
+                    <label for="isiPesan">Apa Pesanmu?</label>
+                    <textarea id="isiPesan" rows="4" placeholder="Ketik pesanmu di sini... (coba Win + . untuk emoji 😉)" required></textarea>
+                </div>
+                <div class="input-group">
+                    <label for="namaPengirim">Dari Siapa?</label>
+                    <input type="text" id="namaPengirim" placeholder="Cth: Pengagum Rahasiamu" required>
+                </div>
+                <button type="button" id="tombolBuat" class="btn-utama">
+                    <i data-feather="link"></i> Buat Link Salam
+                </button>
+            </form>
 
-    <form id="formSalam">
-        <div>
-            <label for="namaPenerima">Untuk Siapa?</label>
-            <input type="text" id="namaPenerima" placeholder="Cth: Ayah, Ibu, Ani" required>
+            <div id="hasilLink" class="hasil-container">
+                <p>✨ Link berhasil dibuat!</p>
+                <div class="input-copy-wrapper">
+                    <input type="text" id="linkFinal" readonly>
+                    <button type="button" id="tombolCopy" class="btn-copy">
+                        <i data-feather="copy"></i>
+                        <span id="copyText">Salin</span>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="isiPesan">Apa Pesanmu?</label>
-            <textarea id="isiPesan" rows="4" placeholder="Cth: Selamat ulang tahun! Semoga sehat selalu..." required></textarea>
-        </div>
-        <div>
-            <label for="namaPengirim">Dari Siapa?</label>
-            <input type="text" id="namaPengirim" placeholder="Cth: Budi" required>
-        </div>
-        <button type="button" id="tombolBuat">✨ Buat Link Salam!</button>
-    </form>
+    </main>
 
-    <div id="hasilLink">
-        <p>🎉 Berhasil! Copy link di bawah ini dan kirim ke temanmu:</p>
-        <input type="text" id="linkFinal" readonly>
-    </div>
+    <footer class="footer-global">
+        <p>Copyright &copy; <span id="tahun"></span> by kirimsalamID - Awan &#10084;&#65039;</p>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="saran.html">Kritik & Saran</a>
+        </nav>
+    </footer>
 
     <script src="script.js"></script>
 </body>
