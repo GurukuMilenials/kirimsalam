@@ -21,25 +21,59 @@ document.addEventListener('DOMContentLoaded', function() {
         tampilkanSalam();
     }
 
-    // === ▼▼▼ LOGIKA EMOJI BARU (EMOJI-BUTTON) ▼▼▼ ===
+    // === ▼▼▼ LOGIKA EMOJI BARU (MENGGUNAKAN API ANDA) ▼▼▼ ===
     const tombolEmoji = document.getElementById('tombolEmoji');
     const isiPesanTextarea = document.getElementById('isiPesan');
+    const emojiTray = document.getElementById('emojiTray');
+    const API_KEY = "837e03e18940e8ba6d769ebeb8a3b97a31eb6d47";
 
-    if (tombolEmoji && isiPesanTextarea && window.EmojiButton) {
+    if (tombolEmoji && isiPesanTextarea && emojiTray) {
         
-        const picker = new EmojiButton({
-            position: 'bottom-end',
-            autoHide: false // Biar tidak langsung hilang
-        });
-
-        // 1. Saat tombol emoji diklik, tampilkan picker
+        // 1. Tampilkan/Sembunyikan tray
         tombolEmoji.addEventListener('click', () => {
-            picker.togglePicker(tombolEmoji);
+            const isVisible = emojiTray.style.display === 'flex';
+            emojiTray.style.display = isVisible ? 'none' : 'flex';
         });
 
-        // 2. Saat emoji dipilih
-        picker.on('emoji', selection => {
-            const emoji = selection.emoji;
+        // 2. Ambil data dari API Anda
+        async function loadEmojis() {
+            try {
+                // Kita ambil hanya kategori smileys-emotion
+                const response = await fetch(`https://emoji-api.com/emojis?category=smileys-emotion&access_key=${API_KEY}`);
+                if (!response.ok) throw new Error('Gagal ambil data emoji');
+                
+                const emojis = await response.json();
+                
+                // Bersihkan "Loading..."
+                emojiTray.innerHTML = ''; 
+
+                // Ambil 24 emoji pertama saja
+                emojis.slice(0, 24).forEach(emoji => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'emoji-tray-button';
+                    btn.textContent = emoji.character;
+                    btn.title = emoji.unicodeName;
+                    
+                    // 3. Masukkan emoji ke textarea saat diklik
+                    btn.addEventListener('click', () => {
+                        insertEmoji(emoji.character);
+                    });
+                    
+                    emojiTray.appendChild(btn);
+                });
+
+            } catch (error) {
+                console.error(error);
+                emojiTray.innerHTML = '<small>Gagal memuat emoji.</small>';
+            }
+        }
+        
+        // Panggil API-nya
+        loadEmojis();
+
+        // Fungsi helper untuk memasukkan teks di posisi kursor
+        function insertEmoji(emoji) {
             const start = isiPesanTextarea.selectionStart;
             const end = isiPesanTextarea.selectionEnd;
             const text = isiPesanTextarea.value;
@@ -48,17 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             isiPesanTextarea.selectionStart = isiPesanTextarea.selectionEnd = start + emoji.length;
             isiPesanTextarea.focus();
-        });
-
-        // Sembunyikan picker jika klik di luar textarea/tombol
-        document.addEventListener('click', (e) => {
-            if (e.target !== tombolEmoji && !isiPesanTextarea.contains(e.target)) {
-                picker.hidePicker();
-            }
-        });
-
-    } else if (tombolEmoji) {
-        tombolEmoji.style.display = 'none'; // Sembunyikan jika library gagal load
+        }
     }
     // === ▲▲▲ AKHIR LOGIKA EMOJI BARU ▲▲▲ ===
 
@@ -89,7 +113,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-// Fungsi helper btoa/atob (sumber masalah) sudah DIHAPUS.
+// === ▼▼▼ PERBAIKAN ENKRIPSI ANTI-GAGAL (KUNCI MASALAH DATA) ▼▼▼ ===
+function encodeSafe(str) {
+    try {
+        // 1. Ubah string (termasuk emoji) ke format aman-URL
+        const encodedUri = encodeURIComponent(str);
+        // 2. Baru di-Base64
+        return btoa(encodedUri);
+    } catch (e) {
+        console.error('encodeSafe error:', e);
+        return null;
+    }
+}
+
+function decodeSafe(str) {
+    try {
+        // 1. Kembalikan dari Base64
+        const decodedUri = atob(str);
+        // 2. Kembalikan dari format aman-URL (ini akan memunculkan emoji lagi)
+        return decodeURIComponent(decodedUri);
+    } catch (e) {
+        console.error('decodeSafe error:', e);
+        return null;
+    }
+}
+// === ▲▲▲ AKHIR FUNGSI PERBAIKAN ▲▲▲ ===
+
 
 function buatLinkSalam() {
     const penerima = document.getElementById('namaPenerima').value;
@@ -109,10 +158,12 @@ function buatLinkSalam() {
 
     const jsonString = JSON.stringify(dataSalam);
     
-    // === ▼▼▼ PERBAIKAN ENKRIPSI (JAUH LEBIH SEDERHANA & AMAN EMOJI) ▼▼▼ ===
-    // Tidak perlu Base64. Cukup encode untuk URL.
-    const encodedData = encodeURIComponent(jsonString);
-    // === ▲▲▲ AKHIR PERBAIKAN ENKRIPSI ▲▲▲ ===
+    // Gunakan fungsi enkripsi baru yang anti-gagal
+    const encodedData = encodeSafe(jsonString);
+    if (!encodedData) {
+        alert('Terjadi kesalahan saat membuat link. Coba kurangi emoji atau karakter spesial.');
+        return;
+    }
 
     const baseUrl = window.location.href.split('?')[0].replace('index.html', '');
     const finalUrl = `${baseUrl}salam.html#${encodedData}`;
@@ -161,9 +212,9 @@ function tampilkanSalam() {
     }
 
     try {
-        // === ▼▼▼ PERBAIKAN DEKRIPSI (JAUH LEBIH SEDERHANA & AMAN EMOJI) ▼▼▼ ===
-        const decodedString = decodeURIComponent(dataHash);
-        // === ▲▲▲ AKHIR PERBAIKAN DEKRIPSI ▲▲▲ ===
+        // Gunakan fungsi dekripsi baru yang anti-gagal
+        const decodedString = decodeSafe(dataHash);
+        if (!decodedString) throw new Error('Data korup');
 
         const dataSalam = JSON.parse(decodedString);
 
