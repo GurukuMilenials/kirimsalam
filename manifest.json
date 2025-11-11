@@ -1,0 +1,21 @@
+{
+  "name": "kirimsalamID",
+  "short_name": "kirimsalam",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#a8c0ff",
+  "theme_color": "#a8c0ff",
+  "description": "Buat dan bagikan kartu salam digital dengan mudah.",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
