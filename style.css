@@ -34,7 +34,7 @@ body {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    perspective: 1000px; /* <<< DITAMBAHKAN untuk efek 3D */
+    perspective: 1000px;
 }
 
 .card, .kartu-salam {
@@ -239,7 +239,6 @@ textarea {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* === ANIMASI KARTU SALAM (DIUBAH) === */
 .kartu-animasi {
     transform-origin: center;
     opacity: 0;
@@ -256,8 +255,6 @@ textarea {
         transform: rotateY(0) scale(1);
     }
 }
-/* === AKHIR ANIMASI KARTU SALAM === */
-
 
 .anim-muncul-saran {
     opacity: 0;
@@ -271,7 +268,7 @@ textarea {
     }
 }
 
-/* === TAMBAHAN UNTUK EMOJI PICKER === */
+/* === CSS EMOJI PICKER (DIUPDATE) === */
 .emoji-container {
     position: relative;
 }
@@ -297,20 +294,14 @@ textarea {
     transform: scale(1.1);
 }
 
-emoji-picker {
-    display: none; /* Sembunyi secara default */
-    position: absolute;
-    right: 0;
-    top: 70px; /* Posisikan di bawah label */
-    z-index: 100;
-    --border: 1px solid #ddd;
-    --shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
+/* Library baru akan meng-handle styling pop-up nya sendiri */
+/* CSS untuk <emoji-picker> lama sudah dihapus */
 
-/* === TAMBAHAN UNTUK TOMBOL SHARE NATIVE === */
+
+/* === CSS TOMBOL SHARE NATIVE === */
 .btn-share-native {
     background: linear-gradient(45deg, #1d976c, #59c173);
-    margin-top: 10px; /* Kasih jarak dari kotak copy */
+    margin-top: 10px;
 }
 
 .btn-share-native:hover {
