@@ -8,7 +8,10 @@
     <meta property="og:title" content="kirimsalamID">
     <meta property="og:description" content="Buat dan bagikan kartu salam digital dengan mudah.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://kirimsalamid.vercel.app/"> <meta property="og:image" content="https://kirimsalamid.vercel.app/icon-512.png"> <link rel="manifest" href="/manifest.json">
+    <meta property="og:url" content="https://kirimsalamid.vercel.app/">
+    <meta property="og:image" content="https://kirimsalamid.vercel.app/icon-512.png">
+    
+    <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icon-192.png">
     <meta name="theme-color" content="#a8c0ff">
     
@@ -18,8 +21,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/feather-icons"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
-</head>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-emoji-picker@0.3.0/dist/vanilla-emoji-picker.min.js"></script>
+    </head>
 <body>
 
     <main class="container">
@@ -40,8 +44,7 @@
                     </div>
                     <textarea id="isiPesan" rows="4" placeholder="Ketik pesanmu di sini..." required></textarea>
                     
-                    <emoji-picker id="emojiPicker" class="light"></emoji-picker>
-                </div>
+                    </div>
                 
                 <div class="input-group">
                     <label for="namaPengirim">Dari Siapa?</label>
