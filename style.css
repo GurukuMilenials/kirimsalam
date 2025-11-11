@@ -143,30 +143,20 @@ textarea { resize: vertical; min-height: 80px; }
 /* === DESAIN HALAMAN SALAM (salam.html) === */
 
 .salam-page-body {
-    /* Gunakan background yang lebih gelap untuk efek aurora */
     background: #0f0c29;
     background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);
     background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
-    overflow: hidden; /* Sembunyikan partikel yang keluar layar */
-}
-
-/* Partikel Debu Magis */
-.particle-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
     overflow: hidden;
 }
+
+.particle-container {
+    position: fixed; top: 0; left: 0; width: 100%;
+    height: 100%; z-index: -1; overflow: hidden;
+}
 .particle {
-    position: absolute;
-    width: 6px;
-    height: 6px;
+    position: absolute; width: 6px; height: 6px;
     background: rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    opacity: 0;
+    border-radius: 50%; opacity: 0;
     animation: float 20s infinite linear;
 }
 @keyframes float {
@@ -174,7 +164,6 @@ textarea { resize: vertical; min-height: 80px; }
     10%, 90% { opacity: 1; }
     100% { transform: translateY(-10vh) scale(0.5); opacity: 0; }
 }
-/* Acak posisi dan delay partikel */
 .particle:nth-child(1) { top: 5%; left: 10%; animation-delay: 0s; }
 .particle:nth-child(2) { top: 15%; left: 80%; animation-delay: -3s; }
 .particle:nth-child(3) { top: 50%; left: 50%; animation-delay: -7s; }
@@ -188,7 +177,7 @@ textarea { resize: vertical; min-height: 80px; }
 
 
 .kartu-salam {
-    background: rgba(255, 255, 255, 0.1); /* Lebih transparan untuk glassmorphism */
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border-radius: 20px;
@@ -198,61 +187,98 @@ textarea { resize: vertical; min-height: 80px; }
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.2);
     position: relative;
-    overflow: hidden; /* Penting untuk efek shine */
+    overflow: hidden;
     text-align: center;
-    transform-style: preserve-3d;
 }
 
-/* Efek Kilau (Shine) */
-.kartu-shine {
-    position: absolute;
-    top: 0;
-    left: -100%; /* Mulai dari luar kiri */
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(90deg, 
-        rgba(255,255,255,0) 0%, 
-        rgba(255,255,255,0.4) 50%, 
-        rgba(255,255,255,0) 100%);
-    transform: skewX(-20deg);
-    z-index: 5;
-    animation: shine 5s ease-in-out infinite 2s; /* Jalan terus menerus */
-}
-@keyframes shine {
-    0% { left: -100%; }
-    50% { left: 150%; }
-    100% { left: 150%; }
-}
-
-/* Animasi Masuk Kartu Baru */
-.kartu-animasi-baru {
+/* ▼▼▼ CSS BARU UNTUK KRISTAL HATI ▼▼▼ */
+.kartu-header-animasi {
+    width: 100%;
+    height: 80px; /* Beri ruang di atas */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
     opacity: 0;
-    transform: scale(0.8) rotateY(-30deg);
+    animation: fadeInContent 1s ease-out 1s forwards; /* Muncul setelah kartu */
+}
+
+.crystal-heart {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    transform: rotate(45deg);
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+    box-shadow: 
+        0 0 30px #ff6b6b,
+        0 0 50px #ff6b6b,
+        inset 0 0 10px rgba(255, 255, 255, 0.5);
+    animation: pulseHeart 1.5s infinite ease-in-out;
+}
+.crystal-heart::before,
+.crystal-heart::after {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: inherit;
+    box-shadow: inherit;
+    border-radius: 50%;
+}
+.crystal-heart::before {
+    top: -25px;
+    left: 0;
+}
+.crystal-heart::after {
+    top: 0;
+    left: -25px;
+}
+
+@keyframes pulseHeart {
+    0%, 100% {
+        transform: rotate(45deg) scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: rotate(45deg) scale(1.1);
+        opacity: 1;
+    }
+}
+/* ▲▲▲ AKHIR CSS KRISTAL HATI ▲▲▲ */
+
+
+/* Efek Kilau (Shine) Dihapus */
+
+
+/* Animasi Masuk Kartu Baru (Lebih Sederhana) */
+.kartu-salam-reveal {
+    opacity: 0;
+    transform: scale(0.9);
     animation: cardEntrance 1s ease-out 0.5s forwards;
 }
 @keyframes cardEntrance {
     to {
         opacity: 1;
-        transform: scale(1) rotateY(0);
+        transform: scale(1);
     }
 }
 
-/* Konten di dalam kartu akan fade in */
 .konten-salam {
     opacity: 0;
     animation: fadeInContent 1s ease-out forwards;
-    z-index: 10; /* Di atas shine */
-    position: relative; /* Di atas shine */
+    z-index: 10;
+    position: relative;
 }
 @keyframes fadeInContent {
     to { opacity: 1; }
 }
 
 /* Delay animasi konten satu per satu */
+/* Header sudah di-delay 1s */
 .kartu-salam h3 { animation-delay: 1.5s; }
 .kartu-salam h2 { animation-delay: 1.8s; }
 .kartu-salam .pesan-box { animation-delay: 2.2s; }
-.kartu-salam h4 { animation-delay: 4.5s; } /* Setelah pesan diketik */
+.kartu-salam h4 { animation-delay: 4.5s; } /* Sesuaikan dengan durasi ngetik */
 .kartu-salam .tombol-suka { animation-delay: 4.8s; }
 
 
@@ -283,10 +309,9 @@ textarea { resize: vertical; min-height: 80px; }
     line-height: 1.7;
     margin: 0;
     color: #fff;
-    text-align: left; /* Biar ngetiknya rapi */
+    text-align: left;
 }
 
-/* Kursor untuk animasi mengetik */
 .typing-cursor {
     display: inline-block;
     width: 2px;
