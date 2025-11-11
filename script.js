@@ -21,23 +21,22 @@ document.addEventListener('DOMContentLoaded', function() {
         tampilkanSalam();
     }
 
-    // === ▼▼▼ LOGIKA EMOJI BARU (DIGANTI TOTAL) ▼▼▼ ===
+    // === ▼▼▼ LOGIKA EMOJI BARU (PICMO) ▼▼▼ ===
     const tombolEmoji = document.getElementById('tombolEmoji');
     const isiPesanTextarea = document.getElementById('isiPesan');
 
-    if (tombolEmoji && isiPesanTextarea && typeof EmojiPicker === 'function') {
-        const picker = new EmojiPicker({
-            // Opsi untuk library vanilla-emoji-picker
-            // Kita bisa tambahkan kustomisasi di sini jika perlu
+    if (tombolEmoji && isiPesanTextarea && window.picmo && window.picmoPopup) {
+        
+        // 1. Buat 'picker' pop-up
+        const popup = window.picmoPopup.createPopup({}, {
+            referenceElement: tombolEmoji,
+            triggerElement: tombolEmoji,
+            position: 'bottom-end'
         });
 
-        // 1. Tampilkan picker saat tombol diklik
-        tombolEmoji.addEventListener('click', () => {
-            picker.togglePicker(tombolEmoji);
-        });
-
-        // 2. Saat emoji dipilih, masukkan ke textarea
-        picker.on('emoji', emoji => {
+        // 2. Saat emoji dipilih
+        popup.on('emoji:select', (selection) => {
+            const emoji = selection.emoji;
             const start = isiPesanTextarea.selectionStart;
             const end = isiPesanTextarea.selectionEnd;
             const text = isiPesanTextarea.value;
@@ -48,9 +47,13 @@ document.addEventListener('DOMContentLoaded', function() {
             isiPesanTextarea.focus();
         });
         
+        // 3. Tampilkan/sembunyikan picker saat tombol diklik
+        tombolEmoji.addEventListener('click', () => {
+            popup.toggle();
+        });
+
     } else if (tombolEmoji) {
-        // Sembunyikan tombol jika library gagal load
-        tombolEmoji.style.display = 'none';
+        tombolEmoji.style.display = 'none'; // Sembunyikan tombol jika library gagal load
     }
     // === ▲▲▲ AKHIR LOGIKA EMOJI BARU ▲▲▲ ===
 
@@ -81,27 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-// === ▼▼▼ FUNGSI HELPER BARU (PENTING) ▼▼▼ ===
-// Fungsi ini mengubah string UTF-8 (termasuk emoji) ke Base64
-function encodeSafe(str) {
-    try {
-        return btoa(encodeURIComponent(str));
-    } catch (e) {
-        console.error('encodeSafe error:', e);
-        return null;
-    }
-}
-
-// Fungsi ini mengubah Base64 kembali ke string UTF-8
-function decodeSafe(str) {
-    try {
-        return decodeURIComponent(atob(str));
-    } catch (e) {
-        console.error('decodeSafe error:', e);
-        return null;
-    }
-}
-// === ▲▲▲ AKHIR FUNGSI HELPER BARU ▲▲▲ ===
+// === ▼▼▼ FUNGSI HELPER LAMA (encodeSafe/decodeSafe) SUDAH DIHAPUS ▼▼▼ ===
 
 
 function buatLinkSalam() {
@@ -122,12 +105,9 @@ function buatLinkSalam() {
 
     const jsonString = JSON.stringify(dataSalam);
     
-    // === ▼▼▼ PERBAIKAN ENKRIPSI (DIUPDATE) ▼▼▼ ===
-    const encodedData = encodeSafe(jsonString);
-    if (!encodedData) {
-        alert('Terjadi kesalahan saat membuat link. Coba kurangi emoji atau karakter spesial.');
-        return;
-    }
+    // === ▼▼▼ PERBAIKAN ENKRIPSI (JAUH LEBIH SEDERHANA) ▼▼▼ ===
+    // Tidak perlu Base64. Cukup encode untuk URL. Ini 100% aman-emoji.
+    const encodedData = encodeURIComponent(jsonString);
     // === ▲▲▲ AKHIR PERBAIKAN ENKRIPSI ▲▲▲ ===
 
     const baseUrl = window.location.href.split('?')[0].replace('index.html', '');
@@ -177,9 +157,8 @@ function tampilkanSalam() {
     }
 
     try {
-        // === ▼▼▼ PERBAIKAN DEKRIPSI (DIUPDATE) ▼▼▼ ===
-        const decodedString = decodeSafe(dataHash);
-        if (!decodedString) throw new Error('Data korup');
+        // === ▼▼▼ PERBAIKAN DEKRIPSI (JAUH LEBIH SEDERHANA) ▼▼▼ ===
+        const decodedString = decodeURIComponent(dataHash);
         // === ▲▲▲ AKHIR PERBAIKAN DEKRIPSI ▲▲▲ ===
 
         const dataSalam = JSON.parse(decodedString);
