@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sebuah Salam Untukmu!</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .kartu-salam {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            
+            /* INI ANIMASI SEDERHANA-NYA */
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s ease-out 0.5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h3 { font-size: 24px; margin-top: 0; }
+        .pesan-box {
+            min-height: 100px;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 18px;
+            font-style: italic;
+        }
+        h4 { font-size: 18px; font-weight: normal; }
+    </style>
+</head>
+<body>
+
+    <div class="kartu-salam">
+        <h3>Halo, <span id="targetPenerima">...</span>!</h3>
+        
+        <div class="pesan-box">
+            <p id="targetPesan">...</p>
+        </div>
+        
+        <h4>Dengan hangat, <br><span id="targetPengirim">...</span></h4>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
